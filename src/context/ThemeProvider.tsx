@@ -37,7 +37,7 @@ export const ThemeProvider = ({
 
     // check has exist system theme
     if (theme === "system") {
-      const systemTheme = window.matchMedia("(prefer-match-color-scheme: dark)")
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
         .matches
         ? "dark"
         : "light";
