@@ -1,31 +1,15 @@
 @font-face {
   font-family: "Dana";
-  src: url("../fonts/dana/Dana-Black.ttf") format("truetype");
-  font-weight: 900;
+  src: url("../fonts/dana/Dana-Thin.ttf") format("truetype");
+  font-weight: 100;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Dana";
-  src: url("../fonts/dana/Dana-Bold.ttf") format("truetype");
-  font-weight: bold;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Dana";
-  src: url("../fonts/dana/Dana-ExtraBold.ttf") format("truetype");
-  font-weight: bold;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Dana";
-  src: url("../fonts/dana/Dana-Medium.ttf") format("truetype");
-  font-weight: 500;
+  src: url("../fonts/dana/Dana-UltraLight.ttf") format("truetype");
+  font-weight: 200;
   font-style: normal;
   font-display: swap;
 }
@@ -41,23 +25,47 @@
 @font-face {
   font-family: "Dana";
   src: url("../fonts/dana/Dana-Regular.ttf") format("truetype");
-  font-weight: normal;
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Dana";
-  src: url("../fonts/dana/Dana-Thin.ttf") format("truetype");
-  font-weight: 100;
+  src: url("../fonts/dana/Dana-Medium.ttf") format("truetype");
+  font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Dana";
-  src: url("../fonts/dana/Dana-UltraLight.ttf") format("truetype");
-  font-weight: 200;
+  src: url("../fonts/dana/Dana-DemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Dana";
+  src: url("../fonts/dana/Dana-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Dana";
+  src: url("../fonts/dana/Dana-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Dana";
+  src: url("../fonts/dana/Dana-Black.ttf") format("truetype");
+  font-weight: 900;
   font-style: normal;
   font-display: swap;
 }
