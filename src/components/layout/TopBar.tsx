@@ -45,9 +45,7 @@ const TopBar = () => {
           </DropdownMenu>
           <div className="flex text-sm h-10 px-3 rounded-md items-center gap-x-2 border-border border bg-secondary">
             <span className="">تاریخ:</span>
-            <span className="">
-              {new Date().toLocaleString("fa-ir").split(",")[0]}
-            </span>
+            <span className="">{new Date().toLocaleDateString("fa-ir")}</span>
           </div>
         </div>
       </div>
