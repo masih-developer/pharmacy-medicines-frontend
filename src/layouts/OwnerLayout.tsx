@@ -1,11 +1,13 @@
-import { PropsWithChildren } from "react";
 import TopBar from "@/components/layout/TopBar";
+import { Outlet } from "react-router-dom";
 
-const OwnerLayout: React.FC<PropsWithChildren> = ({ children }) => {
+const OwnerLayout = () => {
   return (
     <>
       <TopBar />
-      <main>{children}</main>
+      <main>
+        <Outlet />
+      </main>
     </>
   );
 };
