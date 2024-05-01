@@ -59,17 +59,6 @@ export default function DataTable<TData, TValue>({
     },
   });
 
-  table.getHeaderGroups().map((headerGroup) => {
-    headerGroup.headers.map((header) => {
-      // console.log(
-      //   header.isPlaceholder
-      //     ? null
-      //     : flexRender(header.column.columnDef.header, header.getContext())
-      // );
-      console.log(header.getContext());
-    });
-  });
-
   return (
     <div>
       <div className="flex items-center py-4 gap-x-3">
