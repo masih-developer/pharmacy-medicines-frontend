@@ -5,7 +5,6 @@ import { z } from "zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -13,33 +12,52 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useMutation } from "@tanstack/react-query";
+import { loginUserApi } from "@/services/authService";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import SpinnerLoader from "@/components/ui/loaders/SpinnerLoader";
 
 const LoginContainer = () => {
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof loginSchema>>({
-    defaultValues: {},
+    defaultValues: { email: "", password: "" },
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (values: z.infer<typeof loginSchema>) => {
-    console.log(values);
+  const { mutateAsync } = useMutation({ mutationFn: loginUserApi });
+
+  const onSubmit = async (values: z.infer<typeof loginSchema>) => {
+    try {
+      const { user, message } = await mutateAsync(values);
+      toast.success(message || "ورود موفقیت آمیز بود.");
+      navigate("/", "");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
-    <div className="w-full min-h-screen flex items-center justify-center">
+    <div className="w-full min-h-[calc(100vh-56.8px)] flex items-center justify-center">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form
+          method="POST"
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-5 w-full max-w-[350px] ring ring-border p-5 rounded-lg"
+        >
           <FormField
             control={form.control}
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <FormLabel>ایمیل</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Input
+                    type="text"
+                    placeholder="user@example.com"
+                    {...field}
+                  />
                 </FormControl>
-                <FormDescription>
-                  This is your public display name.
-                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -49,18 +67,25 @@ const LoginContainer = () => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <FormLabel>رمز عبور</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Input placeholder="********" {...field} />
                 </FormControl>
-                <FormDescription>
-                  This is your public display name.
-                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button type="submit">Submit</Button>
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={form.formState.isSubmitting}
+          >
+            {form.formState.isSubmitting ? (
+              <SpinnerLoader className="size-5 border-2" />
+            ) : (
+              "ورود"
+            )}
+          </Button>
         </form>
       </Form>
     </div>
