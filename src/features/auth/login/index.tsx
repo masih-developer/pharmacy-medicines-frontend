@@ -29,9 +29,9 @@ const LoginContainer = () => {
 
   const onSubmit = async (values: z.infer<typeof loginSchema>) => {
     try {
-      const { user, message } = await mutateAsync(values);
+      const { message } = await mutateAsync(values);
       toast.success(message || "ورود موفقیت آمیز بود.");
-      navigate("/", "");
+      navigate("/", { replace: true });
     } catch (error) {
       console.log(error);
     }
