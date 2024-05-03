@@ -11,3 +11,8 @@ export interface MedicineType {
   updatedAt: Date | string;
   __v: number;
 }
+
+export interface MedicinesApiParamsType {
+  page: number;
+  limit: number;
+}
