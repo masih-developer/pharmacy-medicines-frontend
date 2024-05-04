@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowUpDown, Pencil, Trash2 } from "lucide-react";
 import { numberWithCommas } from "@/lib/utils";
 import useMedicines from "./useMedicines";
+import { useMemo } from "react";
 
 const columns: ColumnDef<MedicineType>[] = [
   {
@@ -108,11 +109,27 @@ const columns: ColumnDef<MedicineType>[] = [
 ];
 
 const MedicinesTable = () => {
-  const { isLoading, data } = useMedicines({ page: 1, limit: 20 });
+  const { isLoading, data, fetchNextPage, hasNextPage } = useMedicines();
+  const flatData = useMemo(
+    () => data?.pages?.flatMap((page) => page.medicines) ?? [],
+    [data]
+  );
 
   if (isLoading) "Loading...";
 
-  return <DataTable columns={columns} data={data?.medicines || []} />;
+  return (
+    <div className="">
+      <DataTable columns={columns} data={flatData} />
+      <Button
+        variant="outline"
+        className="mx-auto text-center w-fit flex justify-center mt-5"
+        disabled={!hasNextPage}
+        onClick={() => fetchNextPage()}
+      >
+        load more
+      </Button>
+    </div>
+  );
 };
 
 export default MedicinesTable;
