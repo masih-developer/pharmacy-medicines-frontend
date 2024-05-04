@@ -61,7 +61,7 @@ export default function DataTable<TData, TValue>({
     <div>
       <div className="flex items-center py-4 gap-x-3">
         <Input
-          placeholder="فیلتر کردن کالا ها"
+          placeholder="جستجو بر اساس نام کالا"
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
@@ -138,7 +138,7 @@ export default function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  هیچ محصولی برای نمایش وجود ندارد.
                 </TableCell>
               </TableRow>
             )}
