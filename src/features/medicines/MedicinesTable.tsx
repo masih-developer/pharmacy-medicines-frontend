@@ -2,12 +2,18 @@ import { ColumnDef } from "@tanstack/react-table";
 import { MedicineType } from "./index.types";
 import DataTable from "@/components/ui/data-table";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown, Pencil, Trash2 } from "lucide-react";
+import { ArrowUpDown, Ellipsis, Pencil, Trash2 } from "lucide-react";
 import { numberWithCommas } from "@/lib/utils";
 import useMedicines from "./useMedicines";
 import { useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
 import { SyncLoader } from "react-spinners";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const columns: ColumnDef<MedicineType>[] = [
   {
@@ -87,23 +93,37 @@ const columns: ColumnDef<MedicineType>[] = [
   },
   {
     accessorKey: "edit",
-    header: "ویرایش",
+    header: "اقدامات",
     cell: ({ row }) => {
       return (
-        <div className="flex items-center justify-center gap-x-3">
-          <Button
-            variant="outline"
-            size="sm"
-            className="size-9 p-0"
-            onClick={() => {
-              console.log(row.original);
-            }}
-          >
-            <Pencil className="size-4" />
-          </Button>
-          <Button variant="destructive" size="sm" className="size-9 p-0">
-            <Trash2 className="size-4" />
-          </Button>
+        <div className="flex items-center justify-center w-full">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="size-7 p-0 m-0">
+                <Ellipsis />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                className="cursor-pointer bg-background flex items-center gap-x-2 text-sm"
+                onClick={() => {
+                  console.log(row.original);
+                }}
+              >
+                <Pencil className="size-4" />
+                ویرایش
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="cursor-pointer bg-background flex items-center gap-x-2 text-sm"
+                onClick={() => {
+                  console.log(row.original);
+                }}
+              >
+                <Trash2 className="size-4" />
+                حذف
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       );
     },
@@ -143,9 +163,9 @@ const MedicinesTable = () => {
           >
             بارگذاری بیشتر
           </Button>
-        ) : (
+        ) : flatData.length ? (
           <h4 className="">هیچ محصول دیگری برای نمایش وجود ندارد!</h4>
-        )}
+        ) : undefined}
       </div>
     </div>
   );
