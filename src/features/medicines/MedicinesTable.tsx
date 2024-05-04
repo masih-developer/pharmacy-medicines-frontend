@@ -5,7 +5,9 @@ import { Button } from "@/components/ui/button";
 import { ArrowUpDown, Pencil, Trash2 } from "lucide-react";
 import { numberWithCommas } from "@/lib/utils";
 import useMedicines from "./useMedicines";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
+import { useInView } from "react-intersection-observer";
+import { SyncLoader } from "react-spinners";
 
 const columns: ColumnDef<MedicineType>[] = [
   {
@@ -109,25 +111,42 @@ const columns: ColumnDef<MedicineType>[] = [
 ];
 
 const MedicinesTable = () => {
-  const { isLoading, data, fetchNextPage, hasNextPage } = useMedicines();
+  const { isLoading, data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useMedicines();
+  const { ref, inView } = useInView();
   const flatData = useMemo(
     () => data?.pages?.flatMap((page) => page.medicines) ?? [],
     [data]
   );
+
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [fetchNextPage, inView]);
 
   if (isLoading) "Loading...";
 
   return (
     <div className="">
       <DataTable columns={columns} data={flatData} />
-      <Button
-        variant="outline"
-        className="mx-auto text-center w-fit flex justify-center mt-5"
-        disabled={!hasNextPage}
-        onClick={() => fetchNextPage()}
-      >
-        load more
-      </Button>
+      <div className="flex w-full justify-center items-center my-5 text-primary">
+        {isFetchingNextPage ? (
+          <SyncLoader color="hsl(var(--primary))" size={12} />
+        ) : hasNextPage ? (
+          <Button
+            ref={ref}
+            onClick={() => fetchNextPage()}
+            disabled={!hasNextPage || isFetchingNextPage}
+            variant="outline"
+            size="sm"
+          >
+            بارگذاری بیشتر
+          </Button>
+        ) : (
+          <h4 className="">هیچ محصول دیگری برای نمایش وجود ندارد!</h4>
+        )}
+      </div>
     </div>
   );
 };
