@@ -58,7 +58,7 @@ export default function DataTable<TData, TValue>({
   });
 
   return (
-    <div>
+    <>
       <div className="flex items-center py-4 gap-x-3">
         <Input
           placeholder="جستجو بر اساس نام کالا"
@@ -145,6 +145,6 @@ export default function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-    </div>
+    </>
   );
 }
