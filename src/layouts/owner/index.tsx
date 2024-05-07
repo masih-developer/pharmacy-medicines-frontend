@@ -5,7 +5,7 @@ const OwnerLayout = () => {
   return (
     <>
       <TopBar />
-      <main>
+      <main className="px-5">
         <Outlet />
       </main>
     </>
