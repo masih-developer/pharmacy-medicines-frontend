@@ -27,19 +27,25 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "./dropdown-menu";
+import { useSearchParams } from "react-router-dom";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  searchState: string;
+  setSearchState: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export default function DataTable<TData, TValue>({
   columns,
   data,
+  searchState,
+  setSearchState,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const table = useReactTable({
     data,
@@ -62,10 +68,16 @@ export default function DataTable<TData, TValue>({
       <div className="flex items-center py-4 gap-x-3">
         <Input
           placeholder="جستجو بر اساس نام کالا"
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
+          value={searchState}
+          onChange={(event) => {
+            if (event.target.value.trim() === "") {
+              searchParams.delete("search");
+            } else {
+              searchParams.set("search", event.target.value);
+            }
+            setSearchState(event.target.value);
+            setSearchParams(searchParams);
+          }}
           className="max-w-sm"
         />
         <DropdownMenu>

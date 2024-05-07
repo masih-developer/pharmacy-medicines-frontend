@@ -16,8 +16,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import ActionModal from "./ActionModal";
 import ActionForm from "./ActionForm";
+import { useLocation } from "react-router-dom";
 
 const MedicinesTable = () => {
+  const { search } = useLocation();
   const { isLoading, data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useMedicines();
   const { ref, inView } = useInView();
@@ -26,6 +28,10 @@ const MedicinesTable = () => {
   const [medicineData, setMedicineData] = useState<MedicineType>(
     {} as MedicineType
   );
+  const [searchState, setSearchState] = useState(
+    Object.fromEntries(new URLSearchParams(search)).search || ""
+  );
+
   const flatData = useMemo(
     () => data?.pages?.flatMap((page) => page.medicines) ?? [],
     [data]
@@ -169,7 +175,12 @@ const MedicinesTable = () => {
 
   return (
     <>
-      <DataTable columns={columns} data={flatData} />
+      <DataTable
+        columns={columns}
+        data={flatData}
+        searchState={searchState}
+        setSearchState={setSearchState}
+      />
       <div className="flex w-full justify-center items-center my-5 text-primary">
         {isFetchingNextPage ? (
           <SyncLoader color="hsl(var(--primary))" size={12} />
