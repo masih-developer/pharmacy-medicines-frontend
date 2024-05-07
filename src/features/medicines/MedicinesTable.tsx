@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowUpDown, Ellipsis, Pencil, Trash2 } from "lucide-react";
 import { numberWithCommas } from "@/lib/utils";
 import useMedicines from "./useMedicines";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { SyncLoader } from "react-spinners";
 import {
@@ -14,129 +14,149 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-const columns: ColumnDef<MedicineType>[] = [
-  {
-    accessorKey: "code",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          کد کالا
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
-  {
-    accessorKey: "name",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          نام کالا
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
-  {
-    accessorKey: "expire",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          تاریخ انقضا
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    sortingFn: "datetime",
-    cell: ({ row }) => {
-      const newDate = new Date(row.getValue("expire")).toLocaleDateString(
-        "fa-IR"
-      );
-      return newDate;
-    },
-  },
-  {
-    accessorKey: "quantity",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          کل موجودی
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
-  {
-    accessorKey: "price",
-    header: "قیمت",
-    cell: ({ row }) => {
-      const price = numberWithCommas(row.getValue("price") || 0);
-      return `${price} تومان`;
-    },
-  },
-  {
-    accessorKey: "type",
-    header: "نوع کالا",
-  },
-  {
-    accessorKey: "edit",
-    header: "اقدامات",
-    cell: ({ row }) => {
-      return (
-        <div className="flex items-center justify-center w-full">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="size-7 p-0 m-0">
-                <Ellipsis />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem
-                className="cursor-pointer bg-background flex items-center gap-x-2 text-sm"
-                onClick={() => {
-                  console.log(row.original);
-                }}
-              >
-                <Pencil className="size-4" />
-                ویرایش
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                className="cursor-pointer bg-background flex items-center gap-x-2 text-sm"
-                onClick={() => {
-                  console.log(row.original);
-                }}
-              >
-                <Trash2 className="size-4" />
-                حذف
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      );
-    },
-  },
-];
+import ActionModal from "./ActionModal";
+import ActionForm from "./ActionForm";
 
 const MedicinesTable = () => {
   const { isLoading, data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useMedicines();
   const { ref, inView } = useInView();
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [medicineData, setMedicineData] = useState<MedicineType>(
+    {} as MedicineType
+  );
   const flatData = useMemo(
     () => data?.pages?.flatMap((page) => page.medicines) ?? [],
     [data]
+  );
+
+  const columns: ColumnDef<MedicineType>[] = useMemo(
+    () => [
+      {
+        accessorKey: "code",
+        header: ({ column }) => {
+          return (
+            <Button
+              variant="ghost"
+              onClick={() =>
+                column.toggleSorting(column.getIsSorted() === "asc")
+              }
+            >
+              کد کالا
+              <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+          );
+        },
+      },
+      {
+        accessorKey: "name",
+        header: ({ column }) => {
+          return (
+            <Button
+              variant="ghost"
+              onClick={() =>
+                column.toggleSorting(column.getIsSorted() === "asc")
+              }
+            >
+              نام کالا
+              <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+          );
+        },
+      },
+      {
+        accessorKey: "expire",
+        header: ({ column }) => {
+          return (
+            <Button
+              variant="ghost"
+              onClick={() =>
+                column.toggleSorting(column.getIsSorted() === "asc")
+              }
+            >
+              تاریخ انقضا
+              <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+          );
+        },
+        sortingFn: "datetime",
+        cell: ({ row }) => {
+          const newDate = new Date(row.getValue("expire")).toLocaleDateString(
+            "fa-IR"
+          );
+          return newDate;
+        },
+      },
+      {
+        accessorKey: "quantity",
+        header: ({ column }) => {
+          return (
+            <Button
+              variant="ghost"
+              onClick={() =>
+                column.toggleSorting(column.getIsSorted() === "asc")
+              }
+            >
+              کل موجودی
+              <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+          );
+        },
+      },
+      {
+        accessorKey: "price",
+        header: "قیمت",
+        cell: ({ row }) => {
+          const price = numberWithCommas(row.getValue("price") || 0);
+          return `${price} تومان`;
+        },
+      },
+      {
+        accessorKey: "type",
+        header: "نوع کالا",
+      },
+      {
+        accessorKey: "edit",
+        header: "اقدامات",
+        cell: ({ row }) => {
+          return (
+            <div className="flex items-center justify-center w-full">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="size-7 p-0 m-0">
+                    <Ellipsis />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem
+                    className="cursor-pointer bg-background flex items-center gap-x-2 text-sm"
+                    onClick={() => {
+                      setIsOpenModal(true);
+                      setIsEditMode(true);
+                      setMedicineData(row.original);
+                    }}
+                  >
+                    <Pencil className="size-4" />
+                    ویرایش
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="cursor-pointer bg-background flex items-center gap-x-2 text-sm"
+                    onClick={() => {
+                      console.log(row.original);
+                    }}
+                  >
+                    <Trash2 className="size-4" />
+                    حذف
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          );
+        },
+      },
+    ],
+    []
   );
 
   useEffect(() => {
@@ -148,7 +168,7 @@ const MedicinesTable = () => {
   if (isLoading) "Loading...";
 
   return (
-    <div className="">
+    <>
       <DataTable columns={columns} data={flatData} />
       <div className="flex w-full justify-center items-center my-5 text-primary">
         {isFetchingNextPage ? (
@@ -167,7 +187,10 @@ const MedicinesTable = () => {
           <h4 className="">هیچ محصول دیگری برای نمایش وجود ندارد!</h4>
         ) : undefined}
       </div>
-    </div>
+      <ActionModal open={isOpenModal} onClose={() => setIsOpenModal(false)}>
+        <ActionForm medicineData={medicineData} isEditMode={isEditMode} />
+      </ActionModal>
+    </>
   );
 };
 
