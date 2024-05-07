@@ -188,7 +188,11 @@ const MedicinesTable = () => {
         ) : undefined}
       </div>
       <ActionModal open={isOpenModal} onClose={() => setIsOpenModal(false)}>
-        <ActionForm medicineData={medicineData} isEditMode={isEditMode} />
+        <ActionForm
+          medicineData={medicineData}
+          isEditMode={isEditMode}
+          onClose={() => setIsOpenModal(false)}
+        />
       </ActionModal>
     </>
   );
