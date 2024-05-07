@@ -1,11 +1,7 @@
 import MedicinesTable from "@/features/medicines/MedicinesTable";
 
 const HomePage = () => {
-  return (
-    <main className="p-3">
-      <MedicinesTable />
-    </main>
-  );
+  return <MedicinesTable />;
 };
 
 export default HomePage;
