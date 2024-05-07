@@ -15,13 +15,20 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import DatePicker from "@/components/ui/date-picker";
 import { DateObject } from "react-multi-date-picker";
+import useUpdateMedicine from "./useUpdateMedicine";
+import SyncLoader from "@/components/ui/loaders/SyncLoader";
 
 interface ActionFormType {
   medicineData: MedicineType;
   isEditMode?: boolean;
+  onClose: () => void;
 }
 
-const ActionForm: React.FC<ActionFormType> = ({ medicineData, isEditMode }) => {
+const ActionForm: React.FC<ActionFormType> = ({
+  medicineData,
+  isEditMode,
+  onClose,
+}) => {
   const form = useForm<z.infer<typeof medicineValidationSchema>>({
     defaultValues: {
       name: isEditMode ? medicineData.name : "",
@@ -35,9 +42,19 @@ const ActionForm: React.FC<ActionFormType> = ({ medicineData, isEditMode }) => {
     },
     resolver: zodResolver(medicineValidationSchema),
   });
+  const { updateMedicine, isUpdating } = useUpdateMedicine();
 
   const onSubmit = (values: z.infer<typeof medicineValidationSchema>) => {
-    console.log(values);
+    if (isEditMode) {
+      updateMedicine(
+        { id: medicineData._id, medicine: values },
+        {
+          onSuccess: () => {
+            onClose();
+          },
+        }
+      );
+    }
   };
 
   return (
@@ -151,7 +168,13 @@ const ActionForm: React.FC<ActionFormType> = ({ medicineData, isEditMode }) => {
           )}
         />
         <Button type="submit" className="w-full">
-          {isEditMode ? "ثبت تغییرات" : "ایجاد محصول"}
+          {isUpdating ? (
+            <SyncLoader />
+          ) : isEditMode ? (
+            "ثبت تغییرات"
+          ) : (
+            "ایجاد محصول"
+          )}
         </Button>
       </form>
     </Form>
