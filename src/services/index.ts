@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 // Create the main request instance
 const mainRequest = axios.create({
@@ -33,5 +33,8 @@ mainRequest.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+export interface CustomAxiosError
+  extends AxiosError<{ message: string; statusCode: number }> {}
 
 export default mainRequest;
