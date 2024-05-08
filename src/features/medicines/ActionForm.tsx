@@ -17,6 +17,7 @@ import DatePicker from "@/components/ui/date-picker";
 import { DateObject } from "react-multi-date-picker";
 import useUpdateMedicine from "./useUpdateMedicine";
 import SyncLoader from "@/components/ui/loaders/SyncLoader";
+import useCreateMedicine from "./useCreateMedicine";
 
 type ActionFormType =
   | {
@@ -45,6 +46,7 @@ const ActionForm: React.FC<ActionFormType> = (props) => {
     resolver: zodResolver(medicineValidationSchema),
   });
   const { updateMedicine, isUpdating } = useUpdateMedicine();
+  const { createMedicine, isCreating } = useCreateMedicine();
 
   const onSubmit = (values: z.infer<typeof medicineValidationSchema>) => {
     if (props.modalMode === "edit") {
@@ -56,6 +58,13 @@ const ActionForm: React.FC<ActionFormType> = (props) => {
           },
         }
       );
+    } else {
+      createMedicine(values, {
+        onSuccess: () => {
+          props.onClose();
+          form.reset();
+        },
+      });
     }
   };
 
@@ -188,7 +197,7 @@ const ActionForm: React.FC<ActionFormType> = (props) => {
           )}
         />
         <Button type="submit" className="w-full">
-          {isUpdating ? (
+          {isUpdating || isCreating ? (
             <SyncLoader />
           ) : props.modalMode === "edit" ? (
             "ثبت تغییرات"

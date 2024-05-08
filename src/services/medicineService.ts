@@ -24,3 +24,12 @@ export const updateMedicineApi = async ({
   });
   return data;
 };
+
+export const createMedicineApi = async (
+  medicine: z.infer<typeof medicineValidationSchema>
+) => {
+  const { data } = await mainRequest.post("/medicines", {
+    ...medicine,
+  });
+  return data;
+};
