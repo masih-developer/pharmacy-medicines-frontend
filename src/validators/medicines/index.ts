@@ -21,6 +21,6 @@ export const medicineValidationSchema = z.object({
   quantity: z.number({ message: "موجودی کالا می بایست یک مقدار عددی باشد!" }),
   price: z
     .number({ message: "قیمت کالا می بایست یک مقدار عددی باشد!" })
-    .min(0, "قیمت وارد شده معتبر نمی باشد."),
+    .min(0, "قیمت محصول می بایست عددی مثبت باشد!"),
   type: z.string().min(1, "نوع محصول می بایست حداقل 1 کاراکتر باشد."),
 });

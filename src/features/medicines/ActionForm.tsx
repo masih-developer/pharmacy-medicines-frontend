@@ -87,7 +87,13 @@ const ActionForm: React.FC<ActionFormType> = (props) => {
                   {...field}
                   onChange={(e) => {
                     const value = e.target.value;
-                    field.onChange(value === "" ? "" : parseFloat(value));
+                    field.onChange(
+                      value === ""
+                        ? ""
+                        : isNaN(+value)
+                        ? value
+                        : parseInt(value)
+                    );
                   }}
                 />
               </FormControl>
@@ -107,7 +113,13 @@ const ActionForm: React.FC<ActionFormType> = (props) => {
                   {...field}
                   onChange={(e) => {
                     const value = e.target.value;
-                    field.onChange(value === "" ? "" : parseFloat(value));
+                    field.onChange(
+                      value === ""
+                        ? ""
+                        : isNaN(+value)
+                        ? value
+                        : parseInt(value)
+                    );
                   }}
                 />
               </FormControl>
@@ -127,7 +139,13 @@ const ActionForm: React.FC<ActionFormType> = (props) => {
                   {...field}
                   onChange={(e) => {
                     const value = e.target.value;
-                    field.onChange(value === "" ? "" : parseFloat(value));
+                    field.onChange(
+                      value === ""
+                        ? ""
+                        : isNaN(+value)
+                        ? value
+                        : parseInt(value)
+                    );
                   }}
                 />
               </FormControl>
