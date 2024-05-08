@@ -4,10 +4,11 @@ import {
   DialogContent,
   DialogHeader,
 } from "@/components/ui/dialog";
-import { Pencil, X } from "lucide-react";
+import { ClipboardPlus, Pencil, X } from "lucide-react";
 import { PropsWithChildren } from "react";
 
 interface ActionModalType {
+  modalMode: "create" | "edit";
   open: boolean;
   onClose: () => void;
 }
@@ -15,6 +16,7 @@ interface ActionModalType {
 const ActionModal: React.FC<PropsWithChildren<ActionModalType>> = ({
   open,
   onClose,
+  modalMode,
   children,
 }) => {
   return (
@@ -27,8 +29,17 @@ const ActionModal: React.FC<PropsWithChildren<ActionModalType>> = ({
       >
         <DialogHeader className="flex items-center">
           <div className="flex items-center gap-x-2 font-semibold w-full">
-            <Pencil className="size-4" />
-            ویرایش دارو
+            {modalMode === "create" ? (
+              <>
+                <ClipboardPlus />
+                ایجاد محصول جدید
+              </>
+            ) : (
+              <>
+                <Pencil className="size-4" />
+                ویرایش محصول
+              </>
+            )}
           </div>
         </DialogHeader>
         {children}

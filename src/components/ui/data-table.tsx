@@ -28,6 +28,9 @@ import {
   DropdownMenuTrigger,
 } from "./dropdown-menu";
 import { useSearchParams } from "react-router-dom";
+import { Plus } from "lucide-react";
+import ActionModal from "@/features/medicines/ActionModal";
+import ActionForm from "@/features/medicines/ActionForm";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -46,6 +49,7 @@ export default function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [searchParams, setSearchParams] = useSearchParams();
+  const [createModal, setCreateModal] = useState(false);
 
   const table = useReactTable({
     data,
@@ -65,47 +69,56 @@ export default function DataTable<TData, TValue>({
 
   return (
     <>
-      <div className="flex items-center py-4 gap-x-3">
-        <Input
-          placeholder="جستجو بر اساس نام کالا"
-          value={searchState}
-          onChange={(event) => {
-            if (event.target.value.trim() === "") {
-              searchParams.delete("search");
-            } else {
-              searchParams.set("search", event.target.value);
-            }
-            setSearchState(event.target.value);
-            setSearchParams(searchParams);
-          }}
-          className="max-w-sm"
-        />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              ستون ها
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
+      <div className="flex items-center justify-between py-4">
+        <div className="flex items-center gap-x-3">
+          <Input
+            placeholder="جستجو بر اساس نام کالا"
+            value={searchState}
+            onChange={(event) => {
+              if (event.target.value.trim() === "") {
+                searchParams.delete("search");
+              } else {
+                searchParams.set("search", event.target.value);
+              }
+              setSearchState(event.target.value);
+              setSearchParams(searchParams);
+            }}
+            className="max-w-sm"
+          />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="ml-auto">
+                ستون ها
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+        <Button
+          className="flex items-center gap-x-1"
+          onClick={() => setCreateModal(true)}
+        >
+          <Plus size={20} />
+          افزودن دارو
+        </Button>
       </div>
       <div className="rounded-md border">
         <Table>
@@ -157,6 +170,13 @@ export default function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
+      <ActionModal
+        open={createModal}
+        onClose={() => setCreateModal(false)}
+        modalMode="create"
+      >
+        <ActionForm modalMode="create" onClose={() => setCreateModal(false)} />
+      </ActionModal>
     </>
   );
 }

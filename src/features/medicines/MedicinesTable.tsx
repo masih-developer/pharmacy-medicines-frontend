@@ -24,7 +24,6 @@ const MedicinesTable = () => {
     useMedicines();
   const { ref, inView } = useInView();
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [isEditMode, setIsEditMode] = useState(false);
   const [medicineData, setMedicineData] = useState<MedicineType>(
     {} as MedicineType
   );
@@ -139,7 +138,6 @@ const MedicinesTable = () => {
                     className="cursor-pointer bg-background flex items-center gap-x-2 text-sm"
                     onClick={() => {
                       setIsOpenModal(true);
-                      setIsEditMode(true);
                       setMedicineData(row.original);
                     }}
                   >
@@ -198,10 +196,14 @@ const MedicinesTable = () => {
           <h4 className="">هیچ محصول دیگری برای نمایش وجود ندارد!</h4>
         ) : undefined}
       </div>
-      <ActionModal open={isOpenModal} onClose={() => setIsOpenModal(false)}>
+      <ActionModal
+        modalMode="edit"
+        open={isOpenModal}
+        onClose={() => setIsOpenModal(false)}
+      >
         <ActionForm
           medicineData={medicineData}
-          isEditMode={isEditMode}
+          modalMode="edit"
           onClose={() => setIsOpenModal(false)}
         />
       </ActionModal>

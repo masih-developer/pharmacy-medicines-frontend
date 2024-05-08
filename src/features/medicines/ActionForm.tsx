@@ -18,39 +18,41 @@ import { DateObject } from "react-multi-date-picker";
 import useUpdateMedicine from "./useUpdateMedicine";
 import SyncLoader from "@/components/ui/loaders/SyncLoader";
 
-interface ActionFormType {
-  medicineData: MedicineType;
-  isEditMode?: boolean;
-  onClose: () => void;
-}
+type ActionFormType =
+  | {
+      modalMode: "edit";
+      medicineData: MedicineType;
+      onClose: () => void;
+    }
+  | {
+      modalMode: "create";
+      onClose: () => void;
+    };
 
-const ActionForm: React.FC<ActionFormType> = ({
-  medicineData,
-  isEditMode,
-  onClose,
-}) => {
+const ActionForm: React.FC<ActionFormType> = (props) => {
   const form = useForm<z.infer<typeof medicineValidationSchema>>({
     defaultValues: {
-      name: isEditMode ? medicineData.name : "",
-      code: isEditMode ? medicineData.code : 0,
-      expire: isEditMode
-        ? new Date(medicineData.expire).toISOString()
-        : new Date().toISOString(),
-      price: isEditMode ? medicineData.price : 0,
-      quantity: isEditMode ? medicineData.quantity : 0,
-      type: isEditMode ? medicineData.type : "",
+      name: props.modalMode === "edit" ? props.medicineData.name : "",
+      code: props.modalMode === "edit" ? props.medicineData.code : 0,
+      expire:
+        props.modalMode === "edit"
+          ? new Date(props.medicineData.expire).toISOString()
+          : new Date().toISOString(),
+      price: props.modalMode === "edit" ? props.medicineData.price : 0,
+      quantity: props.modalMode === "edit" ? props.medicineData.quantity : 0,
+      type: props.modalMode === "edit" ? props.medicineData.type : "",
     },
     resolver: zodResolver(medicineValidationSchema),
   });
   const { updateMedicine, isUpdating } = useUpdateMedicine();
 
   const onSubmit = (values: z.infer<typeof medicineValidationSchema>) => {
-    if (isEditMode) {
+    if (props.modalMode === "edit") {
       updateMedicine(
-        { id: medicineData._id, medicine: values },
+        { id: props.medicineData._id, medicine: values },
         {
           onSuccess: () => {
-            onClose();
+            props.onClose();
           },
         }
       );
@@ -170,7 +172,7 @@ const ActionForm: React.FC<ActionFormType> = ({
         <Button type="submit" className="w-full">
           {isUpdating ? (
             <SyncLoader />
-          ) : isEditMode ? (
+          ) : props.modalMode === "edit" ? (
             "ثبت تغییرات"
           ) : (
             "ایجاد محصول"
