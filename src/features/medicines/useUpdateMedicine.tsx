@@ -1,3 +1,4 @@
+import { CustomAxiosError } from "@/services";
 import { updateMedicineApi } from "@/services/medicineService";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
@@ -10,8 +11,10 @@ const useUpdateMedicine = () => {
       toast.success("تغییرات با موفقیت اعمال شد.");
       return queryClient.invalidateQueries({ queryKey: ["medicines"] });
     },
-    onError: () => {
-      toast.error("اعمال تغییرات با خطا مواجه شد.");
+    onError: (error: CustomAxiosError) => {
+      toast.error(
+        error.response?.data.message || "اعمال تغییرات با خطا مواجه شد."
+      );
     },
   });
 
