@@ -33,3 +33,8 @@ export const createMedicineApi = async (
   });
   return data;
 };
+
+export const deleteMedicineApi = async (id: string) => {
+  const { data } = await mainRequest.delete(`/medicines/${id}`);
+  return data;
+};

@@ -17,6 +17,7 @@ import {
 import ActionModal from "./ActionModal";
 import ActionForm from "./ActionForm";
 import { useLocation } from "react-router-dom";
+import DeleteModal from "./DeleteModal";
 
 const MedicinesTable = () => {
   const { search } = useLocation();
@@ -24,6 +25,7 @@ const MedicinesTable = () => {
     useMedicines();
   const { ref, inView } = useInView();
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isOpenDelModal, setIsOpenDelModal] = useState(false);
   const [medicineData, setMedicineData] = useState<MedicineType>(
     {} as MedicineType
   );
@@ -147,7 +149,8 @@ const MedicinesTable = () => {
                   <DropdownMenuItem
                     className="cursor-pointer bg-background flex items-center gap-x-2 text-sm"
                     onClick={() => {
-                      console.log(row.original);
+                      setIsOpenDelModal(true);
+                      setMedicineData(row.original);
                     }}
                   >
                     <Trash2 className="size-4" />
@@ -207,6 +210,11 @@ const MedicinesTable = () => {
           onClose={() => setIsOpenModal(false)}
         />
       </ActionModal>
+      <DeleteModal
+        open={isOpenDelModal}
+        onClose={() => setIsOpenDelModal(false)}
+        medicineData={medicineData}
+      />
     </>
   );
 };
