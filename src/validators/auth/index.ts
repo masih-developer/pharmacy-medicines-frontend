@@ -3,7 +3,7 @@ import { z } from "zod";
 const registerSchema = z.object({
   firstname: z
     .string()
-    .min(5, "اسم کوچک می بایست حداقل 5 کاراکتر باشد.")
+    .min(3, "اسم کوچک می بایست حداقل 5 کاراکتر باشد.")
     .max(20, "اسم کوچک می بایست حداکثر 20 کاراکتر باشد."),
   lastname: z
     .string()
@@ -21,7 +21,7 @@ const registerSchema = z.object({
   password: z
     .string()
     .min(6, "رمز عبور می بایست حداقل 6 کاراکتر باشد.")
-    .max(20, "رمز عبور می بایست حداکثر 20 کاراکتر باشد."),
+    .max(30, "رمز عبور می بایست حداکثر 20 کاراکتر باشد."),
 });
 
 const loginSchema = z.object({
