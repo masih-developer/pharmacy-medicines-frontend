@@ -2,7 +2,7 @@ import { SyncLoader as Loader } from "react-spinners";
 import { LoaderSizeMarginProps } from "react-spinners/helpers/props";
 
 const SyncLoader: React.FC<LoaderSizeMarginProps> = ({
-  color = "hsl(var(--background))",
+  color = "hsl(var(--primary))",
   size = 8,
   ...props
 }) => {
