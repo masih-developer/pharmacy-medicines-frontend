@@ -73,7 +73,7 @@ export default function DataTable<TData, TValue>({
   return (
     <>
       <div className="flex items-center justify-between py-4">
-        <div className="flex items-center gap-x-3">
+        <div className="flex items-center gap-x-3 w-full">
           <Input
             placeholder="جستجو بر اساس نام کالا"
             value={searchState}
@@ -86,7 +86,7 @@ export default function DataTable<TData, TValue>({
               setSearchState(event.target.value);
               setSearchParams(searchParams);
             }}
-            className="max-w-sm"
+            className="max-w-72"
           />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
