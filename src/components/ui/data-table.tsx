@@ -31,12 +31,14 @@ import { useSearchParams } from "react-router-dom";
 import { Plus } from "lucide-react";
 import ActionModal from "@/features/medicines/ActionModal";
 import ActionForm from "@/features/medicines/ActionForm";
+import SyncLoader from "./loaders/SyncLoader";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   searchState: string;
   setSearchState: React.Dispatch<React.SetStateAction<string>>;
+  isLoading: boolean;
 }
 
 export default function DataTable<TData, TValue>({
@@ -44,6 +46,7 @@ export default function DataTable<TData, TValue>({
   data,
   searchState,
   setSearchState,
+  isLoading,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -141,7 +144,18 @@ export default function DataTable<TData, TValue>({
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {isLoading ? (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-20 text-center"
+                >
+                  <div className="flex items-center justify-center">
+                    <SyncLoader size={10} />
+                  </div>
+                </TableCell>
+              </TableRow>
+            ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}

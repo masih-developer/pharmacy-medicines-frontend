@@ -172,8 +172,6 @@ const MedicinesTable = () => {
     }
   }, [fetchNextPage, inView]);
 
-  if (isLoading) "Loading...";
-
   return (
     <>
       <DataTable
@@ -181,6 +179,7 @@ const MedicinesTable = () => {
         data={flatData}
         searchState={searchState}
         setSearchState={setSearchState}
+        isLoading={isLoading}
       />
       <div className="flex w-full justify-center items-center my-5 text-primary">
         {isFetchingNextPage ? (
