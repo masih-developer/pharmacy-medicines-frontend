@@ -1,3 +1,5 @@
+import ProtectedRoute from "@/features/auth/ProtectedRoute";
+import { Role } from "@/features/auth/index.types";
 import AuthLayout from "@/layouts/auth";
 import OwnerLayout from "@/layouts/owner";
 import HomePage from "@/pages/Home";
@@ -12,7 +14,14 @@ const AppRoutes = () => {
         <Route path="/login" element={<LoginPage />} />
       </Route>
 
-      <Route path="/" element={<OwnerLayout />}>
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute allowedRoles={[Role.ADMIN]}>
+            <OwnerLayout />
+          </ProtectedRoute>
+        }
+      >
         <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<HomePage />} />
       </Route>
