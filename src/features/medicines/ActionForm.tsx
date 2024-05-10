@@ -18,6 +18,8 @@ import { DateObject } from "react-multi-date-picker";
 import useUpdateMedicine from "./useUpdateMedicine";
 import SyncLoader from "@/components/ui/loaders/SyncLoader";
 import useCreateMedicine from "./useCreateMedicine";
+import gregorian from "react-date-object/calendars/gregorian";
+import gregorian_fa from "react-date-object/locales/gregorian_fa";
 
 type ActionFormType =
   | {
@@ -185,7 +187,20 @@ const ActionForm: React.FC<ActionFormType> = (props) => {
                 <DatePicker
                   value={new Date(value) || ""}
                   onChange={(date) => {
-                    onChange(date?.isValid ? new Date(date) : "");
+                    if (date instanceof DateObject && date.isValid) {
+                      const newDate = new DateObject({
+                        locale: gregorian_fa,
+                        date: date,
+                        calendar: gregorian,
+                      });
+                      onChange(
+                        new Date(
+                          `${newDate.year}-${newDate.month.number}-${newDate.day}`
+                        )
+                      );
+                    } else {
+                      onChange("");
+                    }
                   }}
                   inputClass="w-full"
                   minDate={new DateObject()}
@@ -196,6 +211,7 @@ const ActionForm: React.FC<ActionFormType> = (props) => {
             </FormItem>
           )}
         />
+
         <Button type="submit" className="w-full">
           {isUpdating || isCreating ? (
             <SyncLoader />
