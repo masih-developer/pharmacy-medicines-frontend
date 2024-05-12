@@ -32,6 +32,7 @@ import { Plus } from "lucide-react";
 import ActionModal from "@/features/medicines/ActionModal";
 import ActionForm from "@/features/medicines/ActionForm";
 import SyncLoader from "./loaders/SyncLoader";
+import SortingDropDown from "@/features/medicines/SortingDropDown";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -115,13 +116,16 @@ export default function DataTable<TData, TValue>({
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <Button
-          className="flex items-center gap-x-1"
-          onClick={() => setCreateModal(true)}
-        >
-          <Plus size={20} />
-          افزودن دارو
-        </Button>
+        <div className="flex items-center gap-x-5">
+          <SortingDropDown />
+          <Button
+            className="flex items-center gap-x-1"
+            onClick={() => setCreateModal(true)}
+          >
+            <Plus size={20} />
+            افزودن دارو
+          </Button>
+        </div>
       </div>
       <div className="rounded-md border">
         <Table>

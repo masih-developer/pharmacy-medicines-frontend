@@ -14,12 +14,19 @@ const useMedicines = () => {
   const searchParams = Object.fromEntries(new URLSearchParams(search));
 
   return useInfiniteQuery({
-    queryKey: ["medicines", searchParams?.search || ""],
+    queryKey: [
+      "medicines",
+      { ...searchParams, search: searchParams?.search || "" },
+    ],
     queryFn: async ({ pageParam }) =>
       getMedicinesApi({
         page: pageParam,
-        limit: 20,
-        search: searchParams.search || "",
+        limit: 50,
+        expire: searchParams.expire,
+        price: searchParams.price,
+        quantity: searchParams.quantity,
+        search: searchParams.search,
+        code: searchParams.code,
       }),
     getNextPageParam: (lastPage: Page, pages: Page[]) => {
       return pages.length < lastPage.totalPage ? pages.length + 1 : undefined;

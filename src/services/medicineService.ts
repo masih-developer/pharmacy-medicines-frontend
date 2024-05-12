@@ -3,9 +3,7 @@ import mainRequest from ".";
 import { z } from "zod";
 import { medicineValidationSchema } from "@/validators/medicines";
 
-export const getMedicinesApi = async (
-  params: MedicinesApiParamsType & { search: string }
-) => {
+export const getMedicinesApi = async (params: MedicinesApiParamsType) => {
   const { data } = await mainRequest.get("/medicines", { params });
   return data;
 };

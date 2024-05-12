@@ -15,4 +15,9 @@ export interface MedicineType {
 export interface MedicinesApiParamsType {
   page: number;
   limit: number;
+  search: string;
+  expire: string;
+  price: string;
+  quantity: string;
+  code: string;
 }
