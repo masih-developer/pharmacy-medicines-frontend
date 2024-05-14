@@ -36,3 +36,10 @@ export const deleteMedicineApi = async (id: string) => {
   const { data } = await mainRequest.delete(`/medicines/${id}`);
   return data;
 };
+
+export const uploadExcelFileApi = async (
+  file: FormData
+): Promise<{ message: string }> => {
+  const { data } = await mainRequest.post("/medicines/file", file);
+  return data;
+};

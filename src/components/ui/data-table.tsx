@@ -33,6 +33,7 @@ import ActionModal from "@/features/medicines/ActionModal";
 import ActionForm from "@/features/medicines/ActionForm";
 import SyncLoader from "./loaders/SyncLoader";
 import SortingDropDown from "@/features/medicines/SortingDropDown";
+import FileActions from "@/features/medicines/FileActions";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -116,7 +117,8 @@ export default function DataTable<TData, TValue>({
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <div className="flex items-center gap-x-5">
+        <div className="flex gap-x-5 w-fit">
+          <FileActions />
           <SortingDropDown />
           <Button
             className="flex items-center gap-x-1"

@@ -93,3 +93,12 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .rtl {
+    direction: rtl;
+  }
+  .ltr {
+    direction: ltr;
+  }
+}
