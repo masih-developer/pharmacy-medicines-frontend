@@ -1,1 +1,1 @@
-Pharmecy Medicine frontend project
+Pharmecy Medicine frontend project app
