@@ -5,7 +5,7 @@ const isoDate = z
   .string()
   .regex(
     /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/,
-    "فرمت تاریخ وارد شده می بایست به فرمت  ISO باشد."
+    "فرمت تاریخ وارد شده می بایست به فرمت  ISO باشد.",
   );
 
 // Custom validator for minimum date

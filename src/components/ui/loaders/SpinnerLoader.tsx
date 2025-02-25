@@ -7,7 +7,7 @@ const SpinnerLoader = ({
     <div
       className={cn(
         "size-16 animate-spin rounded-full border-4 border-border border-r-border/30",
-        className
+        className,
       )}
     />
   );

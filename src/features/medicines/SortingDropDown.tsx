@@ -29,7 +29,7 @@ const DROPDOWN_ITEMS: DropDownItemProps[] = [
 const SortingDropDown = () => {
   const location = useLocation();
   const webSearchParams = Object.fromEntries(
-    new URLSearchParams(location.search)
+    new URLSearchParams(location.search),
   );
   const [searchParams, setSearchParams] = useSearchParams();
 

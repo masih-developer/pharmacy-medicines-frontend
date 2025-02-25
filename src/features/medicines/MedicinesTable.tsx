@@ -27,15 +27,15 @@ const MedicinesTable = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isOpenDelModal, setIsOpenDelModal] = useState(false);
   const [medicineData, setMedicineData] = useState<MedicineType>(
-    {} as MedicineType
+    {} as MedicineType,
   );
   const [searchState, setSearchState] = useState(
-    Object.fromEntries(new URLSearchParams(search)).search || ""
+    Object.fromEntries(new URLSearchParams(search)).search || "",
   );
 
   const flatData = useMemo(
     () => data?.pages?.flatMap((page) => page.medicines) ?? [],
-    [data]
+    [data],
   );
 
   const columns: ColumnDef<MedicineType>[] = useMemo(
@@ -90,7 +90,7 @@ const MedicinesTable = () => {
         sortingFn: "datetime",
         cell: ({ row }) => {
           const newDate = new Date(row.getValue("expire")).toLocaleDateString(
-            "fa-IR"
+            "fa-IR",
           );
           return newDate;
         },
@@ -163,7 +163,7 @@ const MedicinesTable = () => {
         },
       },
     ],
-    []
+    [],
   );
 
   useEffect(() => {

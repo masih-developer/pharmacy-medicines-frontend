@@ -58,7 +58,7 @@ const ActionForm: React.FC<ActionFormType> = (props) => {
           onSuccess: () => {
             props.onClose();
           },
-        }
+        },
       );
     } else {
       createMedicine(values, {
@@ -102,8 +102,8 @@ const ActionForm: React.FC<ActionFormType> = (props) => {
                       value === ""
                         ? ""
                         : isNaN(+value)
-                        ? value
-                        : parseInt(value)
+                          ? value
+                          : parseInt(value),
                     );
                   }}
                 />
@@ -128,8 +128,8 @@ const ActionForm: React.FC<ActionFormType> = (props) => {
                       value === ""
                         ? ""
                         : isNaN(+value)
-                        ? value
-                        : parseInt(value)
+                          ? value
+                          : parseInt(value),
                     );
                   }}
                 />
@@ -154,8 +154,8 @@ const ActionForm: React.FC<ActionFormType> = (props) => {
                       value === ""
                         ? ""
                         : isNaN(+value)
-                        ? value
-                        : parseInt(value)
+                          ? value
+                          : parseInt(value),
                     );
                   }}
                 />
@@ -195,8 +195,8 @@ const ActionForm: React.FC<ActionFormType> = (props) => {
                       });
                       onChange(
                         new Date(
-                          `${newDate.year}-${newDate.month.number}-${newDate.day}`
-                        )
+                          `${newDate.year}-${newDate.month.number}-${newDate.day}`,
+                        ),
                       );
                     } else {
                       onChange("");

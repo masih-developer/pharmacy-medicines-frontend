@@ -24,7 +24,7 @@ export const updateMedicineApi = async ({
 };
 
 export const createMedicineApi = async (
-  medicine: z.infer<typeof medicineValidationSchema>
+  medicine: z.infer<typeof medicineValidationSchema>,
 ) => {
   const { data } = await mainRequest.post("/medicines", {
     ...medicine,
@@ -38,7 +38,7 @@ export const deleteMedicineApi = async (id: string) => {
 };
 
 export const uploadExcelFileApi = async (
-  file: FormData
+  file: FormData,
 ): Promise<{ message: string }> => {
   const { data } = await mainRequest.post("/medicines/file", file);
   return data;

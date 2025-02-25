@@ -8,7 +8,7 @@ const mainRequest = axios.create({
 
 mainRequest.interceptors.request.use(
   (res) => res,
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 mainRequest.interceptors.response.use(
@@ -21,7 +21,7 @@ mainRequest.interceptors.response.use(
       try {
         const { data } = await axios.get(
           `${import.meta.env.VITE_BASE_URL}/user/refresh`,
-          { withCredentials: true }
+          { withCredentials: true },
         );
         if (data) {
           mainRequest(originalConfig);
@@ -31,7 +31,7 @@ mainRequest.interceptors.response.use(
       }
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export interface CustomAxiosError

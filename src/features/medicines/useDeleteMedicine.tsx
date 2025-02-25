@@ -15,7 +15,7 @@ const useDeleteMedicine = () => {
     },
     onError: (error: CustomAxiosError) => {
       toast.error(
-        error.response?.data.message || "اعمال تغییرات با خطا مواجه شد."
+        error.response?.data.message || "اعمال تغییرات با خطا مواجه شد.",
       );
     },
   });
